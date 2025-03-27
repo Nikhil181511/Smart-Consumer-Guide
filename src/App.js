@@ -1,17 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
 import BarcodeScanner from "./components/BarcodeScanner";
 import ProductDetails from "./components/ProductDetails";
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<BarcodeScanner />} />
-        <Route path="/product-details" element={<ProductDetails />} />
-      </Routes>
-    </Router>
-  );
-}
+const App = () => {
+    const [product, setProduct] = useState(null);
+
+    return (
+        <div>
+            <h1>📷 Barcode Scanner</h1>
+            {!product ? (
+                <BarcodeScanner onBarcodeDetected={setProduct} />
+            ) : (
+                <ProductDetails product={product} goBack={() => setProduct(null)} />
+            )}
+        </div>
+    );
+};
 
 export default App;

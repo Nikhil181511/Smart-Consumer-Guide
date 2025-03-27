@@ -1,101 +1,88 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
-import { useNavigate } from "react-router-dom";  
-import "../App.css";
 
-const BarcodeScanner = () => {
-  const webcamRef = useRef(null);
-  const navigate = useNavigate();  
-  const [capturedImage, setCapturedImage] = useState(null);
-  const [uploadImage, setUploadImage] = useState(null);
-  const [scanMode, setScanMode] = useState("live");
-  const [productDetails, setProductDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
+const BarcodeScanner = ({ onBarcodeDetected }) => {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [barcodeData, setBarcodeData] = useState(null);
+    const webcamRef = useRef(null);
 
-  const captureImage = useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setCapturedImage(imageSrc);
-    processImage(imageSrc);
-  }, []);
+    // Handle File Upload
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedImage(file);
+            processImage(file);
+        }
+    };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUploadImage(reader.result);
-        processImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    // Capture Image from Webcam
+    const captureImage = async () => {
+        if (webcamRef.current) {
+            const imageSrc = webcamRef.current.getScreenshot();
+            const blob = await fetch(imageSrc).then(res => res.blob());
+            processImage(blob);
+        }
+    };
 
-  const processImage = async (imageData) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("file", dataURItoBlob(imageData));
+    // Process Image & Send to Backend
+    const processImage = async (imageFile) => {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("file", imageFile);
 
-      const response = await fetch("http://localhost:8000/scan-barcode/", {
-        method: "POST",
-        body: formData,
-      });
+        try {
+            const response = await fetch("http://localhost:8000/scan-barcode/", {
+                method: "POST",
+                body: formData,
+            });
 
-      const result = await response.json();
-      setProductDetails(result);
-    } catch (error) {
-      console.error("Error processing barcode:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+            const data = await response.json();
+            if (data.error) {
+                alert("Error: " + data.error);
+            } else {
+                setBarcodeData(data);
+                onBarcodeDetected(data);  // Send data to parent component
+            }
+        } catch (error) {
+            console.error("Error processing barcode:", error);
+        }
+        setLoading(false);
+    };
 
-  const dataURItoBlob = (dataURI) => {
-    let byteString = atob(dataURI.split(",")[1]);
-    let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-    let ab = new ArrayBuffer(byteString.length);
-    let ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mimeString });
-  };
+    return (
+        <div className="barcode-scanner">
+            <h2>Scan Barcode</h2>
 
-  return (
-    <div className="scanner-container">
-      <h2>📸 Scan Barcode</h2>
-      <div className="scan-options">
-        <button onClick={() => setScanMode("live")}>📷 Live Scan</button>
-        <button onClick={() => setScanMode("upload")}>📂 Upload Image</button>
-      </div>
+            {/* Webcam Preview */}
+            <Webcam 
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                width="100%"
+                height="auto"
+            />
+            <button onClick={captureImage}>Capture from Webcam</button>
 
-      {scanMode === "live" && (
-        <>
-          <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="webcam-view" />
-          <button className="capture-btn" onClick={captureImage}>Capture</button>
-        </>
-      )}
+            {/* File Upload */}
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+            
+            {loading && <p>Processing...</p>}
 
-      {scanMode === "upload" && (
-        <div className="upload-section">
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          {uploadImage && <img src={uploadImage} alt="Uploaded" className="preview-img" />}
+            {barcodeData && (
+                <div>
+                    <h3>Product: {barcodeData.name}</h3>
+                    <p>Brand: {barcodeData.brand}</p>
+                    <p>Category: {barcodeData.category}</p>
+                    <p>Description: {barcodeData.description}</p>
+
+                    {/* View Product Button */}
+                    <button onClick={() => window.location.href = `/product-details?barcode=${barcodeData.barcode}`}>
+                        View Product Details
+                    </button>
+                </div>
+            )}
         </div>
-      )}
-
-      {capturedImage && <img src={capturedImage} alt="Captured" className="preview-img" />}
-      {loading && <p>⏳ Processing...</p>}
-
-      {productDetails && !loading && (
-        <button 
-          className="view-product-btn" 
-          onClick={() => navigate("/product-details", { state: { product: productDetails } })}
-        >
-          📄 View Product Details
-        </button>
-      )}
-    </div>
-  );
+    );
 };
 
 export default BarcodeScanner;

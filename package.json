@@ -9,6 +9,8 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
+    "html5-qrcode": "^2.3.8",
+    "quagga": "^0.12.1",
     "react": "^19.0.0",
     "react-barcode-reader": "^0.0.2",
     "react-dom": "^19.0.0",
@@ -40,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "path-browserify": "^1.0.1",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0"
   }
 }
