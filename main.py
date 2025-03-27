@@ -220,7 +220,7 @@ def fetch_product(barcode: str):
                 }
             }
     except requests.exceptions.RequestException as e:
-        print(f"⚠️ API Error: {e}")
+        print(f"⚠ API Error: {e}")
     
     return {"barcode": barcode, "error": "Product not found"}
 
