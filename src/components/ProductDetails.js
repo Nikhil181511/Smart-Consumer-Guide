@@ -1,29 +1,42 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+import './ProductDetails.css';
 
-const ProductDetails = ({ product }) => {
-    if (!product || product.error) return <p>No product found.</p>;
+const ProductDetails = () => {
+    const location = useLocation();
+    const product = location.state?.product || null;
+
+    if (!product) {
+        return <h2 className="product-details-container">No product details available.</h2>;
+    }
 
     return (
-        <div>
-            <h2>{product.name}</h2>
-            <p><strong>Brand:</strong> {product.brand}</p>
-            <p><strong>Category:</strong> {product.category}</p>
-            <p><strong>Description:</strong> {product.description}</p>
+        <div className="product-details-container">
+            <h2>Product Details</h2>
+            <h3>{product.name || "Unknown"}</h3>
+            <p><strong>Brand:</strong> {product.brand || "Not Available"}</p>
+            <p><strong>Category:</strong> {product.category || "Not Available"}</p>
+            <p><strong>Description:</strong> {product.description || "No description available"}</p>
 
-            {/* Display Product Image */}
-            {product.image && <img src={product.image} alt={product.name} width="200" />}
+            {product.image && <img src={product.image} alt="Product" className="product-image" />}
 
             <h3>🧪 Nutrition Facts</h3>
-            <ul>
-                <li><strong>Energy:</strong> {product.nutrition.energy} kcal</li>
-                <li><strong>Fat:</strong> {product.nutrition.fat} g</li>
-                <li><strong>Saturated Fat:</strong> {product.nutrition.saturated_fat} g</li>
-                <li><strong>Carbohydrates:</strong> {product.nutrition.carbohydrates} g</li>
-                <li><strong>Sugars:</strong> {product.nutrition.sugars} g</li>
-                <li><strong>Fiber:</strong> {product.nutrition.fiber} g</li>
-                <li><strong>Salt:</strong> {product.nutrition.salt} g</li>
-                <li><strong>Proteins:</strong> {product.nutrition.proteins} g</li>
-            </ul>
+            {product.nutrition ? (
+                <div className="nutrition-facts">
+                    <ul>
+                        <li>Energy: {product.nutrition.energy || "N/A"} kcal</li>
+                        <li>Fat: {product.nutrition.fat || "N/A"} g</li>
+                        <li>Saturated Fat: {product.nutrition.saturated_fat || "N/A"} g</li>
+                        <li>Carbohydrates: {product.nutrition.carbohydrates || "N/A"} g</li>
+                        <li>Sugars: {product.nutrition.sugars || "N/A"} g</li>
+                        <li>Fiber: {product.nutrition.fiber || "N/A"} g</li>
+                        <li>Salt: {product.nutrition.salt || "N/A"} g</li>
+                        <li>Proteins: {product.nutrition.proteins || "N/A"} g</li>
+                    </ul>
+                </div>
+            ) : (
+                <p>No nutrition information available.</p>
+            )}
         </div>
     );
 };

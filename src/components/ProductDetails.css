@@ -1,0 +1,79 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #2ecc71;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+}
+
+.product-details-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.product-details-container h2 {
+    color: var(--primary-color);
+    font-size: 26px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+}
+
+.product-details-container h3 {
+    color: var(--secondary-color);
+    font-size: 22px;
+    margin: 15px 0;
+}
+
+.product-details-container p {
+    color: var(--text-color);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.product-image {
+    width: 200px;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nutrition-facts {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.nutrition-facts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.nutrition-facts li {
+    background: var(--background-color);
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .product-details-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .product-details-container h2 {
+        font-size: 22px;
+    }
+
+    .nutrition-facts li {
+        font-size: 13px;
+    }
+}

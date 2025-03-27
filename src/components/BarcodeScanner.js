@@ -1,20 +1,12 @@
 import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
+import { useNavigate } from "react-router-dom";
+import "./BarcodeScanner.css";
 
-const BarcodeScanner = ({ onBarcodeDetected }) => {
-    const [selectedImage, setSelectedImage] = useState(null);
+const BarcodeScanner = () => {
     const [loading, setLoading] = useState(false);
-    const [barcodeData, setBarcodeData] = useState(null);
     const webcamRef = useRef(null);
-
-    // Handle File Upload
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(file);
-            processImage(file);
-        }
-    };
+    const navigate = useNavigate();
 
     // Capture Image from Webcam
     const captureImage = async () => {
@@ -22,6 +14,14 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
             const imageSrc = webcamRef.current.getScreenshot();
             const blob = await fetch(imageSrc).then(res => res.blob());
             processImage(blob);
+        }
+    };
+
+    // Handle File Upload
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            processImage(file);
         }
     };
 
@@ -38,11 +38,13 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
             });
 
             const data = await response.json();
+            console.log("API Response:", data); // ✅ Debugging: Check API response
+
             if (data.error) {
                 alert("Error: " + data.error);
             } else {
-                setBarcodeData(data);
-                onBarcodeDetected(data);  // Send data to parent component
+                // Redirect to Product Details Page
+                navigate(`/product-details`, { state: { product: data } });
             }
         } catch (error) {
             console.error("Error processing barcode:", error);
@@ -61,43 +63,12 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
                 width="100%"
                 height="auto"
             />
-            <button onClick={captureImage}>Capture from Webcam</button>
+            <button onClick={captureImage}>📷 Capture from Webcam</button>
 
             {/* File Upload */}
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             
             {loading && <p>Processing...</p>}
-
-            {barcodeData && (
-                <div>
-                    <h3>Name: {barcodeData.name || "Not Available"}</h3>
-                    <p><strong>Brand:</strong> {barcodeData.brand || "Not Available"}</p>
-                    <p><strong>Category:</strong> {barcodeData.category || "Not Available"}</p>
-                    <p><strong>Description:</strong> {barcodeData.description || "No description available"}</p>
-
-                    {/* Nutrition Facts */}
-                    {barcodeData.nutrition ? (
-                        <div>
-                            <h3>🧪 Nutrition Facts</h3>
-                            <p><strong>Energy:</strong> {barcodeData.nutrition.energy || "N/A"} kcal</p>
-                            <p><strong>Fat:</strong> {barcodeData.nutrition.fat || "N/A"} g</p>
-                            <p><strong>Saturated Fat:</strong> {barcodeData.nutrition.saturated_fat || "N/A"} g</p>
-                            <p><strong>Carbohydrates:</strong> {barcodeData.nutrition.carbohydrates || "N/A"} g</p>
-                            <p><strong>Sugars:</strong> {barcodeData.nutrition.sugars || "N/A"} g</p>
-                            <p><strong>Fiber:</strong> {barcodeData.nutrition.fiber || "N/A"} g</p>
-                            <p><strong>Salt:</strong> {barcodeData.nutrition.salt || "N/A"} g</p>
-                            <p><strong>Proteins:</strong> {barcodeData.nutrition.proteins || "N/A"} g</p>
-                        </div>
-                    ) : (
-                        <p>No nutrition information available.</p>
-                    )}
-
-                    {/* View Product Button */}
-                    <button onClick={() => window.location.href = `/product-details?barcode=${barcodeData.barcode}`}>
-                        View Product Details
-                    </button>
-                </div>
-            )}
         </div>
     );
 };
