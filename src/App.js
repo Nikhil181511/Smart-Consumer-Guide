@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import BarcodeScanner from "./components/BarcodeScanner";
-import './App.css'; 
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
-    return (
-        <div>
-            <h1>Smart Barcode Scanner</h1>
-            <BarcodeScanner />
-        </div>
-    );
+  const [product, setProduct] = useState(null);
+
+  return (
+    <div className="App">
+      <h1>🔍 Smart Barcode Scanner</h1>
+      <BarcodeScanner onBarcodeDetected={setProduct} />
+      {product && <ProductDetails product={product} />}
+    </div>
+  );
 }
 
 export default App;
