@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 
 const BarcodeScanner = ({ onBarcodeDetected }) => {
@@ -70,10 +70,27 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
 
             {barcodeData && (
                 <div>
-                    <h3>Product: {barcodeData.name}</h3>
-                    <p>Brand: {barcodeData.brand}</p>
-                    <p>Category: {barcodeData.category}</p>
-                    <p>Description: {barcodeData.description}</p>
+                    <h3>Name: {barcodeData.name || "Not Available"}</h3>
+                    <p><strong>Brand:</strong> {barcodeData.brand || "Not Available"}</p>
+                    <p><strong>Category:</strong> {barcodeData.category || "Not Available"}</p>
+                    <p><strong>Description:</strong> {barcodeData.description || "No description available"}</p>
+
+                    {/* Nutrition Facts */}
+                    {barcodeData.nutrition ? (
+                        <div>
+                            <h3>🧪 Nutrition Facts</h3>
+                            <p><strong>Energy:</strong> {barcodeData.nutrition.energy || "N/A"} kcal</p>
+                            <p><strong>Fat:</strong> {barcodeData.nutrition.fat || "N/A"} g</p>
+                            <p><strong>Saturated Fat:</strong> {barcodeData.nutrition.saturated_fat || "N/A"} g</p>
+                            <p><strong>Carbohydrates:</strong> {barcodeData.nutrition.carbohydrates || "N/A"} g</p>
+                            <p><strong>Sugars:</strong> {barcodeData.nutrition.sugars || "N/A"} g</p>
+                            <p><strong>Fiber:</strong> {barcodeData.nutrition.fiber || "N/A"} g</p>
+                            <p><strong>Salt:</strong> {barcodeData.nutrition.salt || "N/A"} g</p>
+                            <p><strong>Proteins:</strong> {barcodeData.nutrition.proteins || "N/A"} g</p>
+                        </div>
+                    ) : (
+                        <p>No nutrition information available.</p>
+                    )}
 
                     {/* View Product Button */}
                     <button onClick={() => window.location.href = `/product-details?barcode=${barcodeData.barcode}`}>
