@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BarcodeScanner from "./components/BarcodeScanner";
 import ProductDetails from "./components/ProductDetails";
 
 function App() {
-  const [product, setProduct] = useState(null);
+  const [barcode, setBarcode] = useState("");
 
   return (
-    <div className="App">
-      <h1>🔍 Smart Barcode Scanner</h1>
-      <BarcodeScanner onBarcodeDetected={setProduct} />
-      {product && <ProductDetails product={product} />}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<BarcodeScanner setBarcode={setBarcode} />} />
+        <Route path="/product/:barcode" element={<ProductDetails />} />
+      </Routes>
+    </Router>
   );
 }
 

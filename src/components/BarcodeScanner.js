@@ -1,12 +1,14 @@
 import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
+import ProductDetails from "./ProductDetails";
 import "../App.css";
 
-const BarcodeScanner = ({ onBarcodeDetected }) => {
+const BarcodeScanner = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [uploadImage, setUploadImage] = useState(null);
   const [scanMode, setScanMode] = useState("live"); // 'live' or 'upload'
+  const [productData, setProductData] = useState(null);
 
   const captureImage = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -37,7 +39,7 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
       });
 
       const result = await response.json();
-      onBarcodeDetected(result);
+      setProductData(result); // Store product details
     } catch (error) {
       console.error("Error processing barcode:", error);
     }
@@ -78,6 +80,15 @@ const BarcodeScanner = ({ onBarcodeDetected }) => {
       )}
 
       {capturedImage && <img src={capturedImage} alt="Captured" className="preview-img" />}
+
+      {/* Button to view product details */}
+      {productData && (
+        <button className="view-details-btn" onClick={() => setScanMode("details")}>
+          View Product Details
+        </button>
+      )}
+
+      {scanMode === "details" && <ProductDetails product={productData} />}
     </div>
   );
 };

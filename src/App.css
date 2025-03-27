@@ -1,42 +1,35 @@
-.scanner-container {
+.scanner-container, .product-container {
   text-align: center;
   padding: 20px;
 }
 
-.scan-options button {
-  margin: 5px;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
+button {
   background: #007bff;
   color: white;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.webcam-view {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
-}
-
-.capture-btn {
-  background: #28a745;
-  color: white;
-  padding: 10px;
   border: none;
-  margin-top: 10px;
+  padding: 10px 20px;
+  margin: 10px;
   cursor: pointer;
   border-radius: 5px;
 }
 
-.upload-section {
-  margin-top: 20px;
+button:hover {
+  background: #0056b3;
 }
 
-.preview-img {
-  margin-top: 10px;
+input {
+  margin: 10px;
+}
+
+img {
   max-width: 100%;
   height: auto;
-  border-radius: 10px;
+  margin-top: 10px;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
 }
