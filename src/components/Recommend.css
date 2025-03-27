@@ -1,0 +1,115 @@
+.recommendations-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.recommendations-content {
+    margin-top: 1.5rem;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    font-size: 32px;
+}
+
+h2, h3 {
+    color: #2E7D32;
+    font-size: 24px;
+    margin-top: 1rem;
+}
+
+.recommendation-group {
+    margin-bottom: 1.5rem;
+    background: #E8F5E9;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.alternative-products {
+    margin-top: 1.5rem;
+}
+
+.product-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 1rem;
+    border: 1px solid #4CAF50;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 1rem;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.error-message {
+    color: #D32F2F;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 2rem;
+}
+
+.back-btn {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.back-btn button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 16px;
+}
+
+.back-btn button:hover {
+    background-color: #388E3C;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .recommendations-container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    .product-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}

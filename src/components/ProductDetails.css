@@ -16,6 +16,25 @@
     border: 1px solid #e0e0e0;
     text-align: center;
 }
+.nutrition-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 18px;
+  width: 100%; /* This will make the button take up the full width of its parent container */
+}
+
+.nutrition-btn:hover {
+  background-color: #45a049;
+}
+
+.nutrition-btn:active {
+  background-color: #388E3C;
+}
 
 .product-details-container h2 {
     color: var(--primary-color);
@@ -38,12 +57,14 @@
 }
 
 .product-image {
-    width: 200px;
-    height: auto;
-    border-radius: 12px;
-    margin-top: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: auto; /* Makes the image responsive, takes the full width of its parent container */
+  height: auto; /* Maintains the aspect ratio of the image */
+  max-width: 500px; /* Limits the image width to prevent it from becoming too large */
+  border-radius: 12px;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .nutrition-facts {
     margin-top: 20px;
@@ -76,4 +97,44 @@
     .nutrition-facts li {
         font-size: 13px;
     }
+}
+.sustainability-scores {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.score-details {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.score-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.score-color-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.score-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.score-text strong {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.score-text span {
+  color: #666;
+  font-size: 14px;
 }
