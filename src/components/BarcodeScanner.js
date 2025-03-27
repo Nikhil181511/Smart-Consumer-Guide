@@ -43,11 +43,12 @@ const BarcodeScanner = () => {
             if (data.error) {
                 alert("Error: " + data.error);
             } else {
-                // Redirect to Product Details Page
-                navigate(`/product-details`, { state: { product: data } });
+                // ✅ Corrected Navigation Syntax
+                navigate("/product-details", { state: { product: data } });
             }
         } catch (error) {
             console.error("Error processing barcode:", error);
+            alert("Error processing barcode. Please try again.");
         }
         setLoading(false);
     };

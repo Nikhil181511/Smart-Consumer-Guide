@@ -10,11 +10,12 @@ app = FastAPI()
 # Enable CORS for frontend connection
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3003"],  # Update this to match your frontend
+    allow_origins=["http://localhost:3001"],  # Correct frontend URL
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
 OPENFOODFACTS_URL = "https://world.openfoodfacts.org/api/v0/product"
 
 # Fetch product details
@@ -47,7 +48,7 @@ def fetch_product(barcode):
                 }
             }
     except requests.exceptions.RequestException as e:
-        print(f"⚠️ API Error: {e}")
+        print(f"⚠ API Error: {e}")
     
     return {"barcode": barcode, "error": "Product not found"}
 
