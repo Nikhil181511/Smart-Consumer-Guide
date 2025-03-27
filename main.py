@@ -20,6 +20,8 @@ app.add_middleware(
 UPC_LOOKUP_API_KEY = "B6707C152D99C6033073D5BF345D4215"
 UPC_LOOKUP_URL = "https://api.upcdatabase.org/product"
 OPENFOODFACTS_URL = "https://world.openfoodfacts.org/api/v0/product"
+USDA_API_KEY = "decFnnaPbSCMIN0iXQlFxkmzenURWMHgYaRQdkY4"
+USDA_API_URL = "https://api.nal.usda.gov/fdc/v1/foods/search"
 
 def fetch_upc_database(barcode):
     """Fetch product details from UPC Database API."""
@@ -31,18 +33,29 @@ def fetch_upc_database(barcode):
         print("📦 UPC Database Response:", data)
 
         if "title" in data or "brand" in data:
+            # Extract nutrition data safely
+            nutrition_data = data.get("metanutrition", {})
+
             return {
                 "barcode": barcode,
                 "name": data.get("title", "Unknown"),
-                "brand": data.get("brand", "Unknown"),
+                "brand": data.get("brand") or "Not Available",
                 "category": data.get("category", "Unknown"),
-                "description": data.get("description", "Not available"),
+                "description": data.get("description") or "No description available",
                 "image": data["images"][0] if data.get("images") else None,
-                "nutrition": data.get("metanutrition", {}),
+                "nutrition": {
+                    "Calories": nutrition_data.get("energy-kcal_value", "N/A"),
+                    "Fat": f"{nutrition_data.get('fat_unit', 'g')} {nutrition_data.get('fat_value', 'N/A')}",
+                    "Carbohydrates": f"{nutrition_data.get('carbohydrates_unit', 'g')} {nutrition_data.get('carbohydrates_value', 'N/A')}",
+                    "Proteins": f"{nutrition_data.get('proteins_unit', 'g')} {nutrition_data.get('proteins_value', 'N/A')}",
+                    "Sugars": f"{nutrition_data.get('sugars_unit', 'g')} {nutrition_data.get('sugars_value', 'N/A')}",
+                    "Sodium": f"{nutrition_data.get('sodium_unit', 'g')} {nutrition_data.get('sodium_value', 'N/A')}",
+                },
             }
     except requests.exceptions.RequestException as e:
         print(f"⚠️ UPC Database API Error: {e}")
     return None  # If API fails or product not found
+
 
 def fetch_open_food_facts(barcode):
     """Fetch product details from Open Food Facts API."""
@@ -51,7 +64,7 @@ def fetch_open_food_facts(barcode):
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
-        print("🥗  Open Food Facts Response:", data)
+        print("🥗 Open Food Facts Response:", data)
 
         if "product" in data:
             product = data["product"]
@@ -68,9 +81,41 @@ def fetch_open_food_facts(barcode):
         print(f"⚠️ Open Food Facts API Error: {e}")
     return None  # If API fails or product not found
 
+def fetch_usda_health_data(product_name):
+    """Fetch health score and alternatives from USDA FoodData Central API."""
+    url = f"{USDA_API_URL}?query={product_name}&api_key={USDA_API_KEY}"
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        print("🛒 USDA Food Data Response:", data)
+
+        if data.get("foods"):
+            foods = data["foods"]
+            first_food = foods[0]
+
+            health_score = {
+                "calories": first_food["foodNutrients"][0]["value"] if first_food["foodNutrients"] else "N/A",
+                "fat": next((n["value"] for n in first_food["foodNutrients"] if n["nutrientName"] == "Total lipid (fat)"), "N/A"),
+                "protein": next((n["value"] for n in first_food["foodNutrients"] if n["nutrientName"] == "Protein"), "N/A"),
+            }
+
+            alternative_products = [food["description"] for food in foods[1:4]]
+
+            return {"health_score": health_score, "alternatives": alternative_products}
+    except requests.exceptions.RequestException as e:
+        print(f"⚠️ USDA API Error: {e}")
+    return None  # If API fails or no data found
+
 def get_product_details(barcode):
-    """Try multiple sources for product lookup."""
+    """Try multiple sources for product lookup and fetch health details."""
     product = fetch_upc_database(barcode) or fetch_open_food_facts(barcode)
+
+    if product and product.get("name"):
+        health_data = fetch_usda_health_data(product["name"])
+        if health_data:
+            product.update(health_data)
+
     return product if product else {"barcode": barcode, "error": "Product not found"}
 
 @app.post("/scan-barcode/")

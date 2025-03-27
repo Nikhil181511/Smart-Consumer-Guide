@@ -1,14 +1,16 @@
 import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
-import ProductDetails from "./ProductDetails";
+import { useNavigate } from "react-router-dom";  
 import "../App.css";
 
 const BarcodeScanner = () => {
   const webcamRef = useRef(null);
+  const navigate = useNavigate();  
   const [capturedImage, setCapturedImage] = useState(null);
   const [uploadImage, setUploadImage] = useState(null);
-  const [scanMode, setScanMode] = useState("live"); // 'live' or 'upload'
-  const [productData, setProductData] = useState(null);
+  const [scanMode, setScanMode] = useState("live");
+  const [productDetails, setProductDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const captureImage = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -30,6 +32,7 @@ const BarcodeScanner = () => {
 
   const processImage = async (imageData) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("file", dataURItoBlob(imageData));
 
@@ -39,13 +42,14 @@ const BarcodeScanner = () => {
       });
 
       const result = await response.json();
-      setProductData(result); // Store product details
+      setProductDetails(result);
     } catch (error) {
       console.error("Error processing barcode:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Convert Data URL to Blob
   const dataURItoBlob = (dataURI) => {
     let byteString = atob(dataURI.split(",")[1]);
     let mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
@@ -80,15 +84,16 @@ const BarcodeScanner = () => {
       )}
 
       {capturedImage && <img src={capturedImage} alt="Captured" className="preview-img" />}
+      {loading && <p>⏳ Processing...</p>}
 
-      {/* Button to view product details */}
-      {productData && (
-        <button className="view-details-btn" onClick={() => setScanMode("details")}>
-          View Product Details
+      {productDetails && !loading && (
+        <button 
+          className="view-product-btn" 
+          onClick={() => navigate("/product-details", { state: { product: productDetails } })}
+        >
+          📄 View Product Details
         </button>
       )}
-
-      {scanMode === "details" && <ProductDetails product={productData} />}
     </div>
   );
 };

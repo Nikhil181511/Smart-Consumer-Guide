@@ -1,35 +1,17 @@
-.scanner-container, .product-container {
-  text-align: center;
-  padding: 20px;
+.nutrition-section {
+  margin-top: 20px;
 }
 
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+.nutrition-section h3 {
+  margin-bottom: 10px;
 }
 
-button:hover {
-  background: #0056b3;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-input {
-  margin: 10px;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-}
-
-pre {
-  background: #f4f4f4;
-  padding: 10px;
-  border-radius: 5px;
-  overflow-x: auto;
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
 }
