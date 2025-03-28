@@ -1,40 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import Chatbot from "./Chatbot"; // Import chatbot
 import './ProductDetails.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAppleAlt, faLeaf, faBox, faTag, faImage, faTrophy, faStore } from '@fortawesome/free-solid-svg-icons';
 
+const API_KEY = "decFnnaPbSCMIN0iXQlFxkmzenURWMHgYaRQdkY4";
+
+// Helper function to calculate scores
 const calculateNutritionScore = (nutrition) => {
   if (!nutrition) return 0;
-  
+
   let score = 50; // Base score
-  
+
   score += nutrition.proteins > 10 ? 10 : 0;
   score -= nutrition.sugars > 10 ? 10 : 0;
   score += nutrition.fiber > 3 ? 5 : 0;
   score -= nutrition.saturated_fat > 5 ? 10 : 0;
-  
+
   return Math.min(Math.max(score, 0), 100);
 };
 
 const calculateEnvironmentalScore = (product) => {
   let score = 50;
-  
+
   score += product.sustainablePackaging ? 15 : 0;
   score += product.localSourcing ? 10 : 0;
   score -= product.highCarbonFootprint ? 15 : 0;
-  
+
   return Math.min(Math.max(score, 0), 100);
 };
 
 const calculateEthicalSourcingScore = (product) => {
   let score = 50;
-  
+
   score += product.fairTrade ? 20 : 0;
   score += product.organicCertified ? 15 : 0;
   score += product.supportsCommunities ? 10 : 0;
-  
+
   return Math.min(Math.max(score, 0), 100);
+};
+
+// Health Rating Component
+const HealthRating = ({ productName }) => {
+  const [healthScore, setHealthScore] = useState(null);
+
+  useEffect(() => {
+    if (!productName) return;
+
+    const fetchHealthData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.nal.usda.gov/fdc/v1/foods/search?query=${productName}&api_key=${API_KEY}`
+        );
+
+        const data = await response.json();
+
+        if (data.foods && data.foods.length > 0) {
+          const firstResult = data.foods[0];
+          setHealthScore({
+            calories: firstResult.foodNutrients.find(n => n.nutrientName === "Energy")?.value || "N/A",
+            fat: firstResult.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || "N/A",
+            protein: firstResult.foodNutrients.find(n => n.nutrientName === "Protein")?.value || "N/A",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching health data:", error);
+      }
+    };
+
+    fetchHealthData();
+  }, [productName]);
+
+  return (
+    <div className="health-rating">
+      <h3><FontAwesomeIcon icon={faAppleAlt} /> Health Rating</h3>
+      {healthScore ? (
+        <div>
+          <p><strong>Calories:</strong> {healthScore.calories} kcal</p>
+          <p><strong>Fat:</strong> {healthScore.fat} g</p>
+          <p><strong>Protein:</strong> {healthScore.protein} g</p>
+        </div>
+      ) : (
+        <p>Loading health data...</p>
+      )}
+    </div>
+  );
 };
 
 const ProductDetails = () => {
@@ -74,22 +126,22 @@ const ProductDetails = () => {
 
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {`${(percent * 100).toFixed(0)}%`}
+        {(percent * 100).toFixed(0)}%
       </text>
     );
   };
 
   return (
     <div className="product-details-container">
-      <h2>Product Details</h2>
+      <h2><FontAwesomeIcon icon={faBox} /> Product Details</h2>
       <h3>{product.name || "Unknown"}</h3>
-      <p><strong>Brand:</strong> {product.brand || "Not Available"}</p>
-      <p><strong>Category:</strong> {product.category || "Not Available"}</p>
-      <p><strong>Description:</strong> {product.description || "No description available"}</p>
+      <p><FontAwesomeIcon icon={faStore} /> <strong>Brand:</strong> {product.brand || "Not Available"}</p>
+      <p><FontAwesomeIcon icon={faTag} /> <strong>Category:</strong> {product.category || "Not Available"}</p>
+      <p><FontAwesomeIcon icon={faImage} /> <strong>Description:</strong> {product.description || "No description available"}</p>
       
       {product.image && <img src={product.image} alt="Product" className="product-image" />}
       
-      <h3>🧪 Nutrition Facts</h3>
+      <h3><FontAwesomeIcon icon={faLeaf} /> Nutrition Facts</h3>
       {product.nutrition ? (
         <div className="nutrition-facts">
           <ul>
@@ -107,7 +159,9 @@ const ProductDetails = () => {
         <p>No nutrition information available.</p>
       )}
 
-      <h3>🌍 AI-Driven Sustainability Scores</h3>
+      <HealthRating productName={product.name} />
+
+      <h3><FontAwesomeIcon icon={faTrophy} /> AI-Driven Sustainability Scores</h3>
       <div className="sustainability-scores">
         <PieChart width={400} height={400}>
           <Pie
@@ -149,7 +203,7 @@ const ProductDetails = () => {
           onClick={handlePersonalizeNutrition}
           className="nutrition-btn"
         >
-          🍽 Personalize Nutrition Recommendations
+          <FontAwesomeIcon icon={faAppleAlt} /> Personalize Nutrition Recommendations
         </button>
       </div>
 

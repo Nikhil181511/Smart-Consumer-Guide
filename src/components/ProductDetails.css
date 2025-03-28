@@ -1,140 +1,183 @@
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #2ecc71;
-    --background-color: #ecf0f1;
-    --text-color: #34495e;
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #2ecc71;
+  --background-color: #ecf0f1;
+  --text-color: #34495e;
 }
 
 .product-details-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 25px;
-    background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
-    text-align: center;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  text-align: center;
 }
 .nutrition-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-size: 18px;
-  width: 100%; /* This will make the button take up the full width of its parent container */
+background-color: #4CAF50;
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 0.75rem 1.5rem;
+cursor: pointer;
+transition: background 0.3s;
+font-size: 18px;
+width: 100%; /* This will make the button take up the full width of its parent container */
 }
 
 .nutrition-btn:hover {
-  background-color: #45a049;
+background-color: #45a049;
 }
 
 .nutrition-btn:active {
-  background-color: #388E3C;
+background-color: #388E3C;
 }
 
 .product-details-container h2 {
-    color: var(--primary-color);
-    font-size: 26px;
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 10px;
+  color: var(--primary-color);
+  font-size: 26px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 10px;
 }
 
 .product-details-container h3 {
-    color: var(--secondary-color);
-    font-size: 22px;
-    margin: 15px 0;
+  color: var(--secondary-color);
+  font-size: 22px;
+  margin: 15px 0;
 }
 
 .product-details-container p {
-    color: var(--text-color);
-    font-size: 16px;
-    margin-bottom: 10px;
+  color: var(--text-color);
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .product-image {
-  width: auto; /* Makes the image responsive, takes the full width of its parent container */
-  height: auto; /* Maintains the aspect ratio of the image */
-  max-width: 500px; /* Limits the image width to prevent it from becoming too large */
-  border-radius: 12px;
-  margin-top: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+width: auto; /* Makes the image responsive, takes the full width of its parent container */
+height: auto; /* Maintains the aspect ratio of the image */
+max-width: 500px; /* Limits the image width to prevent it from becoming too large */
+border-radius: 12px;
+margin-top: 10px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 
 .nutrition-facts {
-    margin-top: 20px;
-    text-align: left;
+  margin-top: 20px;
+  text-align: left;
 }
 
 .nutrition-facts ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .nutrition-facts li {
-    background: var(--background-color);
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
+  background: var(--background-color);
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
-    .product-details-container {
-        width: 90%;
-        padding: 15px;
-    }
+  .product-details-container {
+      width: 90%;
+      padding: 15px;
+  }
 
-    .product-details-container h2 {
-        font-size: 22px;
-    }
+  .product-details-container h2 {
+      font-size: 22px;
+  }
 
-    .nutrition-facts li {
-        font-size: 13px;
-    }
+  .nutrition-facts li {
+      font-size: 13px;
+  }
 }
 .sustainability-scores {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 20px;
 }
 
 .score-details {
-  margin-left: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+margin-left: 30px;
+display: flex;
+flex-direction: column;
+gap: 15px;
 }
 
 .score-detail-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+display: flex;
+align-items: center;
+gap: 15px;
 }
 
 .score-color-indicator {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+width: 20px;
+height: 20px;
+border-radius: 50%;
 }
 
 .score-text {
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 }
 
 .score-text strong {
-  font-size: 16px;
-  margin-bottom: 5px;
+font-size: 16px;
+margin-bottom: 5px;
 }
 
 .score-text span {
-  color: #666;
-  font-size: 14px;
+color: #666;
+font-size: 14px;
+}
+.score-bar {
+width: 100%;
+height: 10px;
+background-color: #e0e0e0;
+margin: 5px 0;
+border-radius: 5px;
+}
+
+.score-bar-filled {
+height: 100%;
+border-radius: 5px;
+}
+
+.score-color-indicator {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+margin-right: 10px;
+}
+
+.score-text {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.qr-code-container {
+position: absolute;
+top: 20px;
+right: 20px;
+width: 100px;
+height: 100px;
+z-index: 10;
+}
+
+.qr-code-image {
+max-width: 100%;
+max-height: 100%;
+object-fit: contain;
+}
+
+.product-details-container {
+position: relative;
 }

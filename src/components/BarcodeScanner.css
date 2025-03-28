@@ -1,23 +1,252 @@
-/* Add this to your existing CSS to center the entire component */
+/* General Container Styling */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Ensure it takes full viewport height */
-  background-color: var(--background-color); /* Optional: Set a background color */
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Inter', 'Arial', sans-serif;
+  padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
+/* Barcode Scanner Box Styling */
 .barcode-scanner {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  text-align: center;
+}
+
+/* Header of the Scanner */
+.scanner-header {
+  margin-bottom: 20px;
+}
+
+.scanner-header h2 {
+  color: #2c3a84;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
+  gap: 10px;
+  margin-bottom: 5px;
+  font-size: 2.5rem;
+}
+/* Community Chat Button Styling */
+.community-chat-btn {
+  background-color: #2c3a84; /* Same as the other buttons */
+  color: white;
+  border: none;
+  width: auto;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px; /* Adjust to give some space from the other buttons */
+}
+
+.community-chat-btn:hover {
+  background-color: #3f51b5; /* Hover effect similar to the other buttons */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.community-chat-btn:active {
+  transform: translateY(1px);
+}
+
+.community-chat-btn:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Subtitle below header */
+.subtitle {
+  color: #6b7280;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+/* Illustration inside Scanner */
+.scanner-illustration {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.illustration-image {
+  background-color: #ffffff;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Welcome Overlay for Barcode Scanner */
+.welcome-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(44, 58, 132, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  color: white;
   text-align: center;
+  padding: 20px;
+}
+
+.welcome-content {
+  text-align: center;
+}
+
+.welcome-icon {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.welcome-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Webcam Container Styling */
+.webcam-container {
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Action Buttons Styling */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.capture-btn,
+.upload-btn,
+.toggle-camera-btn {
+  background-color: #2c3a84;
+  color: white;
+  border: none;
+  width: auto;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.capture-btn:hover,
+.upload-btn:hover,
+.toggle-camera-btn:hover {
+  background-color: #3f51b5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.capture-btn:active,
+.upload-btn:active,
+.toggle-camera-btn:active {
+  transform: translateY(1px);
+}
+
+.capture-btn:disabled,
+.upload-btn:disabled,
+.toggle-camera-btn:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Hidden Input for Upload */
+.hidden-input {
+  display: none;
+}
+
+/* Loading Overlay Styling */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(44, 58, 132, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  color: white;
+  border-radius: 16px;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  color: white;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Webcam Video Styling */
+video {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Responsive Adjustments for Small Screens */
+@media (max-width: 480px) {
+  .barcode-scanner {
+    padding: 20px;
+    margin: 0 10px;
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+
+  .illustration-image {
+    max-width: 200px;
+  }
 }

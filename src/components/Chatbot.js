@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Chatbot.css";
 
-// ✅ Chatbot Component
 const Chatbot = ({ product }) => {
     // 🔹 State to store chat messages
     const [messages, setMessages] = useState([]);
@@ -81,7 +80,7 @@ const Chatbot = ({ product }) => {
             />
 
             {/* 🔹 Send button */}
-            <button onClick={sendMessage}>Send</button>
+            <button class = "next" onClick={sendMessage}>Send</button>
         </div>
     );
 };

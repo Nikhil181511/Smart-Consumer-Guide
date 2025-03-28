@@ -1,5 +1,5 @@
 .chatbot-container {
-    width: 300px;
+    width: 500px;
     height: 400px;
     position: fixed;
     bottom: 20px;
@@ -44,7 +44,7 @@ input {
 }
 
 button {
-    width: 18%;
+    width:30%;
     padding: 5px;
     background: #007bff;
     color: white;
