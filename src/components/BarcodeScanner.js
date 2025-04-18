@@ -19,10 +19,20 @@ const BarcodeScanner = () => {
     }, []);
 
     const captureImage = async () => {
-        if (webcamRef.current) {
-            const imageSrc = webcamRef.current.getScreenshot();
+        if (!webcamRef.current) return;
+
+        const imageSrc = webcamRef.current.getScreenshot();
+        if (!imageSrc) {
+            alert("Could not capture image from webcam.");
+            return;
+        }
+
+        try {
             const blob = await fetch(imageSrc).then(res => res.blob());
             await processImage(blob);
+        } catch (error) {
+            console.error("Error capturing image:", error);
+            alert("Failed to capture image. Try again.");
         }
     };
 
@@ -35,18 +45,18 @@ const BarcodeScanner = () => {
 
     const processImage = async (imageFile) => {
         if (loading) return;
-
         setLoading(true);
+
         const formData = new FormData();
         formData.append("file", imageFile);
 
         try {
-            const response = await fetch("https://consumerbackend.onrender.com", {
+            const response = await fetch("http://localhost:8000/scan-barcode/", {
                 method: "POST",
                 body: formData,
             });
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();
             if (data.error) throw new Error(data.error);
@@ -54,19 +64,20 @@ const BarcodeScanner = () => {
             navigate("/product-details", { state: { product: data } });
         } catch (error) {
             console.error("Error processing barcode:", error);
-            alert(error.message || "Error processing barcode. Please try again.");
+            alert(error?.message || "Error processing barcode. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
     const triggerFileInput = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
+        fileInputRef.current?.click();
     };
 
-    // Add this function to navigate to the community chat page
+    const toggleCamera = () => {
+        setIsCameraOn(prev => !prev);
+    };
+
     const navigateToCommunityChat = () => {
         navigate("/community-chat");
     };
@@ -88,19 +99,16 @@ const BarcodeScanner = () => {
                 <p className="subtitle">Today is a beautiful day</p>
             </div>
 
-            {/* Horizontal Flex Container for Three Components */}
             <div className="horizontal-container">
-
-                {/* QR Code Illustration */}
                 <div className="scanner-illustration">
                     <img 
                         src={QrCodeIllustration} 
                         alt="Scan and Discover" 
                         className="illustration-image"
+                        crossOrigin="anonymous"
                     />
                 </div>
 
-                {/* Webcam Preview */}
                 {isCameraOn && (
                     <div className="webcam-container">
                         <Webcam
@@ -117,11 +125,10 @@ const BarcodeScanner = () => {
                     </div>
                 )}
 
-                {/* Action Buttons */}
                 <div className="action-buttons">
                     <button 
                         onClick={captureImage} 
-                        disabled={loading}
+                        disabled={loading || !isCameraOn}
                         className="capture-btn"
                     >
                         <Camera size={20} /> Capture
@@ -145,14 +152,13 @@ const BarcodeScanner = () => {
                     </button>
 
                     <button
-                        onClick={() => setIsCameraOn(prev => !prev)}
+                        onClick={toggleCamera}
                         className="toggle-camera-btn"
                         disabled={loading}
                     >
                         {isCameraOn ? "Turn off Camera" : "Turn on Camera"}
                     </button>
 
-                    {/* Button to Navigate to Community Chat */}
                     <button 
                         onClick={navigateToCommunityChat} 
                         className="community-chat-btn"
