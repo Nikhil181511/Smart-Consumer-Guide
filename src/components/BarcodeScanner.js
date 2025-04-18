@@ -51,12 +51,15 @@ const BarcodeScanner = () => {
         formData.append("file", imageFile);
 
         try {
-            const response = await fetch("https://consumerbackend.onrender.com", {
+            const response = await fetch("https://consumerbackend.onrender.com/scan-barcode/", {
                 method: "POST",
                 body: formData,
             });
 
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status} - ${errorText}`);
+            }
 
             const data = await response.json();
             if (data.error) throw new Error(data.error);
