@@ -41,7 +41,7 @@ const BarcodeScanner = () => {
         formData.append("file", imageFile);
 
         try {
-            const response = await fetch("http://localhost:8000/scan-barcode/", {
+            const response = await fetch("https://consumerbackend.onrender.com", {
                 method: "POST",
                 body: formData,
             });
