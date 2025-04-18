@@ -23,7 +23,7 @@ const Chatbot = ({ product }) => {
 
         try {
             // ✅ Send API request with user input and product details
-            const response = await fetch("http://localhost:8000/chat", {
+            const response = await fetch("https://consumerbackend.onrender.com", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text: input, product }),
