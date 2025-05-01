@@ -242,7 +242,8 @@ async def chat(data: dict):
     context = f"The user is asking about {product_details.get('name', 'a product')}. "
     if product_details:
         context += f"Here are some details: {product_details}. "
-    context += "Respond in a helpful and concise way using bullet points."
+    else:
+        context += "Answer to the questions ased by the user in a helpfull manner also covering the points to what user asks in bullet points."
 
     try:
         response = model.generate_content(context + user_message)
