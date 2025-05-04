@@ -1,88 +1,103 @@
 import React, { useState } from "react";
 import "./Chatbot.css";
 
-const Chatbot = ({ product }) => {
-    // 🔹 State to store chat messages
-    const [messages, setMessages] = useState([]);
-    // 🔹 State to handle user input field
-    const [input, setInput] = useState("");
+const PopupChatbot = ({ product }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
 
-    /**
-     * 🔹 Function to handle sending messages
-     * - Adds user message to state
-     * - Sends request to backend API
-     * - Receives and processes bot response
-     */
-    const sendMessage = async () => {
-        // 🚫 Prevent sending empty messages
-        if (!input.trim()) return;
+  const toggleChatbot = () => {
+    setIsOpen(!isOpen);
+  };
 
-        // ✅ Add user message to chat history
-        const userMessage = { sender: "user", text: input };
-        setMessages((prevMessages) => [...prevMessages, userMessage]);
+  const sendMessage = async () => {
+    if (!input.trim()) return;
 
-        try {
-            // ✅ Send API request with user input and product details
-            const response = await fetch("https://consumerbackend.onrender.com/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: input, product }),
-            });
+    const userMessage = { sender: "user", text: input };
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-            // ✅ Convert response to JSON format
-            const data = await response.json();
+    try {
+      // Use environment variable or fallback to localhost for dev
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
-            // 🚨 Handle unexpected API responses (if response is an object instead of text)
-            if (typeof data.response === "object") {
-                console.error("Chatbot Error: Received an object instead of text", data.response);
-            }
+      const response = await fetch(`${API_URL}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: input, product }),
+      });
 
-            // ✅ Extract bot response
-            const botMessage = { sender: "bot", text: data.response };
+      const data = await response.json();
 
-            // ✅ Add bot response to chat history
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
-        } catch (error) {
-            // ❌ Handle API errors
-            console.error("Chatbot Error:", error);
-        }
+      const botMessage = {
+        sender: "bot",
+        text: typeof data.response === "string" ? data.response : JSON.stringify(data.response),
+      };
 
-        // ✅ Clear input field after sending
-        setInput("");
-    };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
+    } catch (error) {
+      console.error("Chatbot Error:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "bot", text: "⚠️ Sorry, something went wrong." },
+      ]);
+    }
 
-    return (
-        <div className="chatbot-container">
-            <h3>Chat with AI 🤖</h3>
+    setInput("");
+  };
 
-            {/* 🔹 Chatbox displaying messages */}
-            <div className="chatbox">
-                {messages.map((msg, index) => (
-                    <div key={index} className={msg.sender}>
-                        {/* ✅ Ensure bot messages are always string (prevent objects from rendering) */}
-                        {typeof msg.text === "object" ? JSON.stringify(msg.text) : (
-                            msg.text.split('\n').map((line, i) => (
-                                <div key={i} style={{ marginLeft: '1em', textIndent: '-1em' }}>
-                                    {line}
-                                </div>
-                            ))
-                        )}
-                    </div>
-                ))}
-            </div>
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
 
-            {/* 🔹 Input field for user messages */}
-            <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me anything..."
-            />
-
-            {/* 🔹 Send button */}
-            <button class = "next" onClick={sendMessage}>Send</button>
+  return (
+    <>
+      {/* Chat Button */}
+      <div className="chat-button" onClick={toggleChatbot}>
+        <div className="chat-icon">
+          {isOpen ? "✕" : "💬"}
         </div>
-    );
+      </div>
+
+      {/* Chatbot Container */}
+      <div className={`chatbot-container ${!isOpen ? 'hidden' : ''}`}>
+        <div className="chatbot-header">
+          Chat with AI 🤖
+        </div>
+
+        <div className="chatbox">
+          {messages.length === 0 && (
+            <div className="welcome-message">
+              👋 How can I help you today?
+            </div>
+          )}
+          
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              {msg.text.split("\n").map((line, i) => (
+                <div key={i}>{line}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="chat-input-container">
+          <input
+            type="text"
+            className="chat-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask me anything..."
+          />
+          <button className="send-button" onClick={sendMessage}>
+            Send
+          </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
-export default Chatbot;
+export default PopupChatbot;
