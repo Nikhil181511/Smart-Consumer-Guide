@@ -1,252 +1,367 @@
-/* General Container Styling */
+/* Reset and Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Color Variables */
+  --primary-color: #2c3a84;
+  --primary-hover: #3f51b5;
+  --secondary-color: #f0f4ff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --white: #ffffff;
+  --background: #f9fafb;
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.12);
+  
+  /* Spacing Variables */
+  --space-xs: 0.5rem;  /* 8px */
+  --space-sm: 1rem;    /* 16px */
+  --space-md: 1.5rem;  /* 24px */
+  --space-lg: 2rem;    /* 32px */
+  --space-xl: 3rem;    /* 48px */
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background);
+  color: var(--text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container Layout */
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #ffffff;
-  font-family: 'Inter', 'Arial', sans-serif;
-  padding: 20px;
-  margin: 0;
-  box-sizing: border-box;
+  padding: var(--space-md);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
 }
 
-/* Barcode Scanner Box Styling */
+/* Barcode Scanner Component */
 .barcode-scanner {
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  max-width: 500px;
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   width: 100%;
-  padding: 30px;
+  max-width: 1000px;
+  padding: var(--space-lg);
   position: relative;
   text-align: center;
 }
 
-/* Header of the Scanner */
+/* Scanner Header */
 .scanner-header {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-md);
+  text-align: center;
 }
 
 .scanner-header h2 {
-  color: #2c3a84;
+  color: var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 5px;
-  font-size: 2.5rem;
-}
-/* Community Chat Button Styling */
-.community-chat-btn {
-  background-color: #2c3a84; /* Same as the other buttons */
-  color: white;
-  border: none;
-  width: auto;
-  padding: 12px 20px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px; /* Adjust to give some space from the other buttons */
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
 }
 
-.community-chat-btn:hover {
-  background-color: #3f51b5; /* Hover effect similar to the other buttons */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.community-chat-btn:active {
-  transform: translateY(1px);
-}
-
-.community-chat-btn:disabled {
-  background-color: #a0a0a0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Subtitle below header */
+/* Subtitle */
 .subtitle {
-  color: #6b7280;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
+  color: var(--text-light);
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: var(--space-md);
+  font-weight: 500;
 }
 
-/* Illustration inside Scanner */
+/* Horizontal Container Layout */
+.horizontal-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  width: 100%;
+  margin-top: var(--space-md);
+  align-items: center;
+}
+
+/* Illustration */
 .scanner-illustration {
-  margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: var(--space-sm);
 }
 
 .illustration-image {
-  background-color: #ffffff;
-  max-width: 400px;
+  max-width: 100%;
   height: auto;
   object-fit: contain;
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-normal);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Welcome Overlay for Barcode Scanner */
-.welcome-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(44, 58, 132, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  border-radius: 16px;
-  color: white;
-  text-align: center;
-  padding: 20px;
+.scanner-illustration:hover .illustration-image {
+  transform: scale(1.02);
 }
 
-.welcome-content {
-  text-align: center;
-}
-
-.welcome-icon {
-  color: white;
-  margin-bottom: 20px;
-}
-
-.welcome-title {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.welcome-subtitle {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Webcam Container Styling */
+/* Webcam Container */
 .webcam-container {
-  margin-bottom: 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  background-color: var(--secondary-color);
+  aspect-ratio: 4/3;
+  width: 100%;
 }
 
-/* Action Buttons Styling */
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* Button Styles */
 .action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--space-sm);
+  width: 100%;
 }
 
-.capture-btn,
-.upload-btn,
-.toggle-camera-btn {
-  background-color: #2c3a84;
-  color: white;
+.btn,
+.capture-btn, 
+.upload-btn, 
+.toggle-camera-btn,
+.community-chat-btn {
+  background-color: var(--primary-color);
+  color: var(--white);
   border: none;
-  width: auto;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--space-xs);
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
+  transition: all var(--transition-normal);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-size: 0.875rem;
+  width: 100%;
 }
 
-.capture-btn:hover,
-.upload-btn:hover,
-.toggle-camera-btn:hover {
-  background-color: #3f51b5;
+.btn:hover:not(:disabled),
+.capture-btn:hover:not(:disabled),
+.upload-btn:hover:not(:disabled),
+.toggle-camera-btn:hover:not(:disabled),
+.community-chat-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.capture-btn:active,
-.upload-btn:active,
-.toggle-camera-btn:active {
-  transform: translateY(1px);
+.btn:active:not(:disabled),
+.capture-btn:active:not(:disabled),
+.upload-btn:active:not(:disabled),
+.toggle-camera-btn:active:not(:disabled),
+.community-chat-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-.capture-btn:disabled,
-.upload-btn:disabled,
-.toggle-camera-btn:disabled {
+.btn:disabled,
+.capture-btn:disabled, 
+.upload-btn:disabled, 
+.toggle-camera-btn:disabled,
+.community-chat-btn:disabled {
   background-color: #a0a0a0;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
-/* Hidden Input for Upload */
+/* Hidden Input */
 .hidden-input {
   display: none;
 }
 
-/* Loading Overlay Styling */
+/* Welcome Overlay */
+.welcome-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(44, 58, 132, 0.95), rgba(63, 81, 181, 0.9));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: var(--radius-md);
+  color: var(--white);
+  text-align: center;
+  padding: var(--space-lg);
+  backdrop-filter: blur(4px);
+}
+
+.welcome-content {
+  max-width: 100%;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-icon {
+  color: var(--white);
+  margin-bottom: var(--space-md);
+  font-size: 3rem;
+}
+
+.welcome-title {
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  margin-bottom: var(--space-sm);
+  font-weight: 700;
+}
+
+.welcome-subtitle {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Loading Overlay */
 .loading-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(44, 58, 132, 0.9);
+  inset: 0;
+  background: linear-gradient(135deg, rgba(44, 58, 132, 0.9), rgba(63, 81, 181, 0.85));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 20;
-  color: white;
-  border-radius: 16px;
+  color: var(--white);
+  border-radius: var(--radius-md);
 }
 
 .loading-spinner {
   animation: spin 1s linear infinite;
-  color: white;
-  margin-bottom: 15px;
+  color: var(--white);
+  margin-bottom: var(--space-md);
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .horizontal-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
-  100% {
-    transform: rotate(360deg);
+  
+  .scanner-illustration {
+    order: -1; /* Moves illustration to the top on smaller screens */
+  }
+  
+  .webcam-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .action-buttons {
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 
-/* Webcam Video Styling */
-video {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-sm);
+  }
+  
+  .scanner-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+  }
 }
 
-/* Responsive Adjustments for Small Screens */
 @media (max-width: 480px) {
-  .barcode-scanner {
-    padding: 20px;
-    margin: 0 10px;
+  .container {
+    padding: var(--space-xs);
   }
-
+  
   .welcome-title {
+    font-size: 1.25rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 0.875rem;
+  }
+  
+  .scanner-header h2 {
     font-size: 1.5rem;
   }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn,
+  .capture-btn, 
+  .upload-btn, 
+  .toggle-camera-btn,
+  .community-chat-btn {
+    padding: 10px 16px;
+    font-size: 0.75rem;
+  }
+}
 
-  .illustration-image {
-    max-width: 200px;
+/* Accessibility Improvements */
+.btn:focus-visible,
+.capture-btn:focus-visible, 
+.upload-btn:focus-visible, 
+.toggle-camera-btn:focus-visible,
+.community-chat-btn:focus-visible {
+  outline: 2px solid var(--primary-hover);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
