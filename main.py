@@ -10,7 +10,7 @@ import google.generativeai as genai
 import os
 
 
-GEMINI_KEY = "AIzaSyASuqtC0x-oMcRmmIDwY9h5_K-eDXnAoVI"
+GEMINI_KEY = Api_key
 genai.configure(api_key=GEMINI_KEY)
 
 # Gemini Pro model
@@ -25,9 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-OPENFOODFACTS_URL = "https://world.openfoodfacts.org/api/v0/product"
-UPC_LOOKUP_API_KEY = "B6707C152D99C6033073D5BF345D4215"
-UPC_LOOKUP_URL = "https://api.upcdatabase.org/product"
+OPENFOODFACTS_URL = Api_key
+UPC_LOOKUP_API_KEY = Api_key
+UPC_LOOKUP_URL = Api_key
 
 
 def fetch_product_openfoodfacts(barcode: str):
@@ -125,7 +125,7 @@ import google.generativeai as genai
 import os
 from typing import Optional
 
-GEMINI_KEY = "AIzaSyASuqtC0x-oMcRmmIDwY9h5_K-eDXnAoVI"
+GEMINI_KEY = Api_key
 genai.configure(api_key=GEMINI_KEY)
 
 # Gemini Pro model
@@ -142,9 +142,9 @@ app.add_middleware(
 )
 
 # API URLs & Keys
-OPENFOODFACTS_URL = "https://world.openfoodfacts.org/api/v0/product"
-UPC_LOOKUP_API_KEY = "B6707C152D99C6033073D5BF345D4215"
-UPC_LOOKUP_URL = "https://api.upcdatabase.org/product"
+OPENFOODFACTS_URL = Api_key
+UPC_LOOKUP_API_KEY = Api_key
+UPC_LOOKUP_URL = Api_key
 
 # Fetch product details from OpenFoodFacts
 def fetch_product_openfoodfacts(barcode: str):
